@@ -1,0 +1,185 @@
+@page "/preferences"
+@using Microsoft.JSInterop
+@using UserPreference.BlazorWasm.Services
+@using UserPreference.BlazorWasm.Models
+@inject IPreferenceService PreferenceService
+@inject IToastService ToastService
+@inject IJSRuntime JSRuntime
+
+<PageTitle>Preferences - User Preference Solution</PageTitle>
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header">
+                    <h3>User Preferences</h3>
+                </div>
+                <div class="card-body">
+                    @if (isLoading)
+                    {
+                        <div class="text-center">
+                            <div class="spinner-border" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                            <p class="mt-2">Loading preferences...</p>
+                        </div>
+                    }
+                    else if (preferences != null)
+                    {
+                        <form @onsubmit="SavePreferences">
+                            <div class="mb-3">
+                                <label for="theme" class="form-label">Theme</label>
+                                <select id="theme" class="form-select" @bind="preferences.Theme" @onchange="OnThemeChanged">
+                                    <option value="light">Light Theme</option>
+                                    <option value="dark">Dark Theme</option>
+                                    <option value="auto">Auto (System)</option>
+                                </select>
+                                <div class="form-text">Choose your preferred application theme.</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="language" class="form-label">Language</label>
+                                <select id="language" class="form-select" @bind="preferences.Language">
+                                    <option value="en">English</option>
+                                    <option value="es">Español</option>
+                                    <option value="fr">Français</option>
+                                    <option value="de">Deutsch</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="timezone" class="form-label">Timezone</label>
+                                <select id="timezone" class="form-select" @bind="preferences.Timezone">
+                                    <option value="UTC">UTC</option>
+                                    <option value="EST">Eastern Time</option>
+                                    <option value="CST">Central Time</option>
+                                    <option value="MST">Mountain Time</option>
+                                    <option value="PST">Pacific Time</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="notifications" @bind="preferences.NotificationsEnabled">
+                                    <label class="form-check-label" for="notifications">
+                                        Enable Notifications
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" id="analytics" @bind="preferences.AnalyticsEnabled">
+                                    <label class="form-check-label" for="analytics">
+                                        Enable Analytics
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button type="submit" class="btn btn-primary" disabled="@isSaving">
+                                    @if (isSaving)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        <span>Saving...</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Save Preferences</span>
+                                    }
+                                </button>
+                                <button type="button" class="btn btn-secondary" @onclick="ResetToDefaults">Reset to Defaults</button>
+                            </div>
+                        </form>
+                    }
+                    else
+                    {
+                        <div class="alert alert-danger">
+                            Failed to load preferences. Please try refreshing the page.
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private UserPreferences? preferences;
+    private bool isLoading = true;
+    private bool isSaving = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            isLoading = true;
+            preferences = await PreferenceService.GetPreferencesAsync();
+            
+            // Apply theme immediately
+            await ApplyTheme(preferences.Theme);
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Failed to load preferences: {ex.Message}");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task OnThemeChanged(ChangeEventArgs e)
+    {
+        if (e.Value != null)
+        {
+            await ApplyTheme(e.Value.ToString() ?? "light");
+        }
+    }
+
+    private async Task ApplyTheme(string theme)
+    {
+        try
+        {
+            await JSRuntime.InvokeVoidAsync("applyTheme", theme);
+        }
+        catch
+        {
+            // Ignore JS errors in development
+        }
+    }
+
+    private async Task SavePreferences()
+    {
+        if (preferences == null) return;
+
+        try
+        {
+            isSaving = true;
+            await PreferenceService.UpdatePreferencesAsync(preferences);
+            ToastService.ShowSuccess("Preferences saved successfully!");
+        }
+        catch (Exception ex)
+        {
+            ToastService.ShowError($"Failed to save preferences: {ex.Message}");
+        }
+        finally
+        {
+            isSaving = false;
+        }
+    }
+
+    private async Task ResetToDefaults()
+    {
+        if (preferences == null) return;
+
+        preferences = new UserPreferences();
+        await ApplyTheme(preferences.Theme);
+        StateHasChanged();
+        
+        ToastService.ShowInfo("Preferences reset to defaults");
+    }
+
+
+}
