@@ -2,7 +2,7 @@
 
 A modern, cloud-native user preference management system built with Blazor WebAssembly, Azure Functions, and Azure services.
 
-## 🏗️ Architecture
+## Architecture
 
 This solution implements a microservices architecture with the following components:
 
@@ -15,7 +15,7 @@ This solution implements a microservices architecture with the following compone
 - **Azure Key Vault**: Secure secrets and configuration storage
 - **Application Insights**: Monitoring and telemetry
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -86,7 +86,7 @@ This solution implements a microservices architecture with the following compone
    az keyvault secret set --vault-name <key-vault-name> --name "AppInsightsConnectionString" --value "<app-insights-connection-string>"
    ```
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 UserPreferenceSolution/
@@ -112,7 +112,7 @@ UserPreferenceSolution/
 └── UserPreferenceSolution.sln              # Solution file
 ```
 
-## 🔧 Configuration
+## Configuration
 
 ### Environment Variables
 
@@ -131,7 +131,7 @@ For local development, you can use:
 - **Azure Storage Emulator**: For local Functions development
 - **User Secrets**: For storing sensitive configuration locally
 
-## 🚀 Deployment
+## Deployment
 
 ### Azure App Service Deployment
 
@@ -162,20 +162,20 @@ The Blazor WebAssembly app can be deployed to:
 - Azure Blob Storage with CDN
 - Azure App Service
 
-## 📊 Monitoring and Logging
+## Monitoring and Logging
 
 - **Application Insights**: Application performance monitoring
 - **Azure Monitor**: Infrastructure monitoring
 - **Structured Logging**: Serilog integration for detailed logging
 
-## 🔒 Security
+## Security
 
 - **Azure AD B2C**: User authentication and authorization
 - **Azure Key Vault**: Secure configuration storage
 - **HTTPS Only**: All endpoints use HTTPS
 - **CORS**: Configured for Blazor app origins
 
-## 🧪 Testing
+## Testing
 
 ### Unit Tests
 ```bash
@@ -190,14 +190,14 @@ dotnet test --filter Category=Integration
 ### API Testing
 Use the Swagger UI at `/swagger` when running the API locally.
 
-## 📈 Performance
+## Performance
 
 - **CDN**: Static assets served from CDN
 - **Caching**: Response caching for API endpoints
 - **Async Operations**: Non-blocking I/O operations
 - **Connection Pooling**: Optimized database connections
 
-## 🔄 CI/CD
+## CI/CD
 
 ### GitHub Actions
 
@@ -213,7 +213,7 @@ Azure DevOps pipelines can be configured for:
 - Infrastructure deployment
 - Application deployment
 
-## 🤝 Contributing
+## Contributing
 
 1. Fork the repository
 2. Create a feature branch
@@ -221,18 +221,18 @@ Azure DevOps pipelines can be configured for:
 4. Add tests
 5. Submit a pull request
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
-## 🆘 Support
+## Support
 
 For support and questions:
 - Create an issue in the repository
 - Contact the development team
 - Check the documentation
 
-## 🔮 Roadmap
+## Roadmap
 
 - [ ] Real-time notifications with SignalR
 - [ ] Multi-tenant support
