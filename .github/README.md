@@ -2,7 +2,7 @@
 
 This directory contains GitHub Actions workflows for CI/CD automation of the UserPreferenceSolution.
 
-## 🚀 Workflows Overview
+## Workflows Overview
 
 ### 1. **CI/CD Pipeline** (`ci-cd.yml`)
 Main workflow that runs on every push to main/develop branches and pull requests.
@@ -43,7 +43,7 @@ Dedicated workflow for Azure infrastructure deployment.
 - Manual environment selection
 - Deployment outputs
 
-## 🔑 Required Secrets
+## Required Secrets
 
 Set these secrets in your GitHub repository settings:
 
@@ -66,7 +66,7 @@ AZURE_STORAGE_ACCOUNT            # Storage account name
 SNYK_TOKEN                # Snyk API token (optional)
 ```
 
-## 🛠️ Setup Instructions
+## Setup Instructions
 
 ### 1. Create Azure Service Principal
 ```bash
@@ -89,7 +89,7 @@ az ad sp create-for-rbac --name "github-actions" --role contributor \
    - `test`
    - `security-scan`
 
-## 📋 Workflow Execution
+## Workflow Execution
 
 ### Automatic Triggers
 - **Push to main**: Full CI/CD pipeline
@@ -101,7 +101,7 @@ az ad sp create-for-rbac --name "github-actions" --role contributor \
 - **CI/CD Pipeline**: Manual deployment trigger
 - **Infrastructure Deployment**: Manual infrastructure deployment with environment selection
 
-## 🔍 Monitoring and Debugging
+## Monitoring and Debugging
 
 ### Workflow Status
 - Check Actions tab for workflow execution status
@@ -114,7 +114,7 @@ az ad sp create-for-rbac --name "github-actions" --role contributor \
 3. **Deployment Errors**: Verify Azure resource group and permissions
 4. **Secret Issues**: Ensure all required secrets are properly configured
 
-## 📚 Additional Resources
+## Additional Resources
 
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 - [Azure CLI GitHub Actions](https://github.com/azure/login)
