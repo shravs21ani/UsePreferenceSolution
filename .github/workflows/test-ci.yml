@@ -1,0 +1,52 @@
+name: Test CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  workflow_dispatch:
+
+jobs:
+  test-pipeline:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+        
+    - name: Test .NET version
+      run: dotnet --version
+      
+    - name: Restore dependencies
+      run: dotnet restore
+      
+    - name: Build solution
+      run: dotnet build --no-restore --configuration Release
+      
+    - name: Run tests
+      run: dotnet test --no-build --verbosity normal --configuration Release
+      
+    - name: Test Bicep validation
+      run: |
+        echo "🔍 Testing Bicep template..."
+        az bicep build --file infra/main.bicep
+        echo "✅ Bicep template is valid!"
+      
+    - name: Success message
+      run: |
+        echo "🎉 Test CI/CD Pipeline completed successfully!"
+        echo ""
+        echo "✅ .NET 8.0 SDK working"
+        echo "✅ Dependencies restored"
+        echo "✅ Solution built successfully"
+        echo "✅ Tests passed"
+        echo "✅ Bicep template validated"
+        echo ""
+        echo "🚀 Your CI/CD pipeline is ready!"
+        echo "Next: Configure Azure resources and uncomment deployment jobs"
