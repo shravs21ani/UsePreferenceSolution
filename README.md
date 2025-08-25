@@ -15,7 +15,7 @@ This solution implements a microservices architecture with the following compone
 - **Azure Key Vault**: Secure secrets and configuration storage
 - **Application Insights**: Monitoring and telemetry
 
-## 🚀 CI/CD Pipeline
+## CI/CD Pipeline
 
 This project includes comprehensive GitHub Actions workflows for automated CI/CD:
 
@@ -26,11 +26,11 @@ This project includes comprehensive GitHub Actions workflows for automated CI/CD
 - **Infrastructure**: Azure infrastructure deployment using Bicep
 
 ### **Features**
-- ✅ Automated builds and testing
-- ✅ Azure infrastructure deployment
-- ✅ Security scanning and dependency updates
-- ✅ Multi-environment deployment support
-- ✅ Automated dependency updates via Dependabot
+- Automated builds and testing
+- Azure infrastructure deployment
+- Security scanning and dependency updates
+- Multi-environment deployment support
+- Automated dependency updates via Dependabot
 
 ### **Quick Start**
 1. Fork/clone this repository
