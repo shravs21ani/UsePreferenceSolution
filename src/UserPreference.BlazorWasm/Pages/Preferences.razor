@@ -1,5 +1,6 @@
 @page "/preferences"
 @using Microsoft.JSInterop
+@using Microsoft.AspNetCore.Components.Web
 @using UserPreference.BlazorWasm.Services
 @using UserPreference.BlazorWasm.Models
 @inject IPreferenceService PreferenceService
@@ -30,7 +31,7 @@
                         <form @onsubmit="SavePreferences">
                             <div class="mb-3">
                                 <label for="theme" class="form-label">Theme</label>
-                                <select id="theme" class="form-select" @bind="preferences.Theme" @onchange="OnThemeChanged">
+                                <select id="theme" class="form-select" @bind="preferences.Theme" @bind:event="oninput" @onchange="OnThemeChanged">
                                     <option value="light">Light Theme</option>
                                     <option value="dark">Dark Theme</option>
                                     <option value="auto">Auto (System)</option>

@@ -1,0 +1,18 @@
+name: 'Azure Login'
+description: 'Login to Azure using service principal'
+inputs:
+  creds:
+    description: 'Azure service principal credentials'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Login to Azure
+      shell: bash
+      run: |
+        echo "${{ inputs.creds }}" > azure_credentials.json
+        az login --service-principal \
+          --username "$(cat azure_credentials.json | jq -r .clientId)" \
+          --password "$(cat azure_credentials.json | jq -r .clientSecret)" \
+          --tenant "$(cat azure_credentials.json | jq -r .tenantId)"
+        rm azure_credentials.json

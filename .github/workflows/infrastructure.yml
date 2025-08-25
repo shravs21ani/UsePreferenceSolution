@@ -1,0 +1,78 @@
+name: Infrastructure Deployment
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'infra/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy to'
+        required: true
+        default: 'Production'
+        type: choice
+        options:
+        - Development
+        - Staging
+        - Production
+
+env:
+  AZURE_RESOURCE_GROUP: ${{ secrets.AZURE_RESOURCE_GROUP }}
+
+jobs:
+  validate-bicep:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Azure CLI
+      uses: azure/setup-azure-cli@v3
+      
+    - name: Validate Bicep template
+      run: |
+        az bicep build --file infra/main.bicep
+        az deployment group validate \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --template-file infra/main.bicep \
+          --parameters \
+            location=${{ secrets.AZURE_LOCATION }} \
+            environment=${{ github.event.inputs.environment || 'Production' }} \
+            appInsightsLocation=${{ secrets.AZURE_LOCATION }}
+
+  deploy-infrastructure:
+    needs: validate-bicep
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Azure CLI
+      uses: azure/setup-azure-cli@v3
+      
+    - name: Login to Azure
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+        
+    - name: Deploy Bicep template
+      run: |
+        az deployment group create \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --template-file infra/main.bicep \
+          --parameters \
+            location=${{ secrets.AZURE_LOCATION }} \
+            environment=${{ github.event.inputs.environment || 'Production' }} \
+            appInsightsLocation=${{ secrets.AZURE_LOCATION }} \
+          --verbose
+          
+    - name: Get deployment outputs
+      run: |
+        az deployment group show \
+          --resource-group ${{ env.AZURE_RESOURCE_GROUP }} \
+          --name main \
+          --query properties.outputs

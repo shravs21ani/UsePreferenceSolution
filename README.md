@@ -15,6 +15,29 @@ This solution implements a microservices architecture with the following compone
 - **Azure Key Vault**: Secure secrets and configuration storage
 - **Application Insights**: Monitoring and telemetry
 
+## 🚀 CI/CD Pipeline
+
+This project includes comprehensive GitHub Actions workflows for automated CI/CD:
+
+### **Workflows**
+- **CI/CD Pipeline**: Main workflow for building, testing, and deploying
+- **Test Suite**: Dedicated testing workflow with code coverage
+- **Security Scan**: Automated security scanning and vulnerability checks
+- **Infrastructure**: Azure infrastructure deployment using Bicep
+
+### **Features**
+- ✅ Automated builds and testing
+- ✅ Azure infrastructure deployment
+- ✅ Security scanning and dependency updates
+- ✅ Multi-environment deployment support
+- ✅ Automated dependency updates via Dependabot
+
+### **Quick Start**
+1. Fork/clone this repository
+2. Set up required GitHub Secrets (see `.github/README.md`)
+3. Push to main branch to trigger deployment
+4. Monitor workflows in the Actions tab
+
 ## Getting Started
 
 ### Prerequisites
@@ -23,6 +46,7 @@ This solution implements a microservices architecture with the following compone
 - Azure CLI
 - Azure Subscription
 - Visual Studio 2022 or VS Code
+- GitHub account with Actions enabled
 
 ### Local Development Setup
 
