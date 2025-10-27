@@ -45,19 +45,19 @@ jobs:
       run: dotnet publish src/UserPreference.Functions/UserPreference.Functions.csproj -c Release -o ./publish/functions
       
     - name: Upload Blazor WASM artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: blazor-wasm
         path: ./publish/blazor-wasm
         
     - name: Upload API artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: api
         path: ./publish/api
         
     - name: Upload Functions artifacts
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v5
       with:
         name: functions
         path: ./publish/functions
